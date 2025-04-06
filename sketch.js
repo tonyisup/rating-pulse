@@ -261,12 +261,55 @@ function drawEndScreen() {
   // Draw the graphs (now includes averages)
   drawHistoryGraphs();
 
+  // Calculate overall average rating
+  let totalSum = 0;
+  let totalCount = 0;
+  for (let i = 0; i < numColumns; i++) {
+    let sum = ratingHistories[i].reduce((a, b) => a + b, 0);
+    let average = sum / ratingHistories[i].length;
+    totalSum += average;
+    totalCount++;
+  }
+  let overallAverage = totalSum / totalCount;
+
+  // Position the overall average in the 4th row, 3rd column (where the 12th graph would be)
+  let graphHeight = graphDisplayArea.h / 4;
+  let graphMargin = 20;
+  let columnsPerRow = 3;
+  let row = 3; // 4th row (0-indexed)
+  let col = 2; // 3rd column (0-indexed)
+  
+  let gx = graphDisplayArea.x + col * (graphDisplayArea.w / columnsPerRow + graphMargin);
+  let gy = graphDisplayArea.y + row * (graphHeight + graphMargin);
+  let gw = graphDisplayArea.w / columnsPerRow - graphMargin;
+  let gh = graphHeight - graphMargin;
+  
+  // Draw a background for the overall average
+  fill(235, 240, 245);
+  noStroke();
+  rect(gx, gy, gw, gh);
+  stroke(100);
+  noFill();
+  rect(gx, gy, gw, gh);
+  
+  // Display the overall average
+  fill(50);
+  noStroke();
+  textSize(16);
+  textAlign(CENTER, TOP);
+  text("OVERALL\nAVERAGE", gx + gw/2, gy + 10);
+  
+  textSize(36);
+  textAlign(CENTER, CENTER);
+  text(nf(overallAverage, 1, 2), gx + gw/2, gy + gh/2 + 20);
+
   // Draw Restart Button
   fill(180, 180, 220, 220);
   noStroke();
   rect(restartButtonArea.x, restartButtonArea.y, restartButtonArea.w, restartButtonArea.h, 8);
   fill(0);
   textSize(18);
+  textAlign(CENTER, CENTER);
   text("Restart", restartButtonArea.x + restartButtonArea.w / 2, restartButtonArea.y + restartButtonArea.h / 2);
 }
 
