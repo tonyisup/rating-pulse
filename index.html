@@ -8,23 +8,30 @@
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #121212;
+            background: #2d2d2d;
+            font-family: Arial, sans-serif;
         }
-        canvas {
-            display: block;
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+						gap: 5px;
         }
+
     </style>
 </head>
 <body>
-    <!-- Load p5.js library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-    
-    <!-- Load your sketch -->
-    <script src="sketch.js"></script>
+    <div class="container">
+        <a href="single-rating/index.html" class="balloon-link">
+            <img src="single-balloon.png" alt="Single Balloon" class="balloon-image" width="200" height="200">
+        </a>
+        <a href="metrics/index.html" class="balloon-link">
+            <img src="budle-balloons.png" alt="Balloon Bundle" class="balloon-image" width="200" height="200">
+        </a>
+    </div>
 </body>
-</html> 
+</html>
