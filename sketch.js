@@ -61,7 +61,7 @@ let deformationAmounts = []; // Array of deformation amounts for each balloon
 let deformationDamping = 0.92;
 
 // --- UI Element Definitions ---
-let pauseButtonArea;
+let pauseButtonArea = { x: 0, y: 0, w: 0, h: 0 };
 let resumeButtonArea;
 let endButtonArea;
 let restartButtonArea;
@@ -93,8 +93,7 @@ function draw() {
   background(40, 45, 50);
 
   // Draw time at the top
-  fill(50);
-  noStroke();
+  fill(255);
   textSize(20);
   textAlign(CENTER, TOP);
   let currentTime = paused ? lastPauseTime : Date.now();
@@ -134,7 +133,7 @@ function draw() {
 
       // 3. Keep visual bubble within screen bounds
       let topBound = bubbleDiameter / 2 + 10;
-      let bottomBound = height - bubbleDiameter / 2 - 10;
+      let bottomBound = pauseButtonArea.y - bubbleDiameter / 2 - 10;
       if (bubbleYs[i] > bottomBound) {
         bubbleYs[i] = bottomBound;
         bubbleVelocitiesY[i] *= -0.4;
@@ -458,15 +457,21 @@ function handleInput(mx, my) {
 // Maps the 0-10 rating to a Y coordinate for the bubble center
 function mapRatingToY(rating) {
   let topPadding = bubbleDiameter / 2 + 30; // Space from top
-  let bottomPadding = bubbleDiameter / 2 + 30; // Space from bottom
-  return map(rating, 0, 10, height - bottomPadding, topPadding);
+  // Use pause button position as bottom boundary if available, otherwise use default
+  let bottomBound = pauseButtonArea && pauseButtonArea.y ? 
+    pauseButtonArea.y - bubbleDiameter / 2 - 10 : 
+    height - bubbleDiameter / 2 - 30;
+  return map(rating, 0, 10, bottomBound, topPadding);
 }
 
 // Maps a Y coordinate to a 0-10 rating (new function)
 function mapYToRating(y) {
   let topPadding = bubbleDiameter / 2 + 30; // Space from top
-  let bottomPadding = bubbleDiameter / 2 + 30; // Space from bottom
-  return map(y, height - bottomPadding, topPadding, 0, 10);
+  // Use pause button position as bottom boundary if available, otherwise use default
+  let bottomBound = pauseButtonArea && pauseButtonArea.y ? 
+    pauseButtonArea.y - bubbleDiameter / 2 - 10 : 
+    height - bubbleDiameter / 2 - 30;
+  return map(y, bottomBound, topPadding, 0, 10);
 }
 
 // Checks if a point (mx, my) is inside a rectangular area {x, y, w, h}
