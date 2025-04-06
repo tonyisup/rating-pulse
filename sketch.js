@@ -373,6 +373,12 @@ function mousePressed() {
     
     if (mouseX >= boxX && mouseX <= boxX + boxWidth &&
         mouseY >= boxY && mouseY <= boxY + boxHeight) {
+      // Apply upward force to mimic a swipe up
+      let upwardForce = -bubbleBouncePower * 2; // Negative value for upward movement
+      bubbleVelocitiesY[i] = upwardForce;
+      deformationAmounts[i] = abs(upwardForce) / bubbleBouncePower;
+      
+      // Still set up for dragging if needed
       isDragging = true;
       dragStartX = mouseX;
       dragStartY = mouseY;
