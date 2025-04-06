@@ -133,7 +133,9 @@ function draw() {
 
       // 3. Keep visual bubble within screen bounds
       let topBound = bubbleDiameter / 2 + 10;
-      let bottomBound = pauseButtonArea.y - bubbleDiameter / 2 - 10;
+      // Make bottom boundary stop above the pause button, accounting for string length
+      let stringLength = 40;
+      let bottomBound = pauseButtonArea.y - bubbleDiameter / 2 - stringLength - 10;
       if (bubbleYs[i] > bottomBound) {
         bubbleYs[i] = bottomBound;
         bubbleVelocitiesY[i] *= -0.4;
@@ -458,9 +460,10 @@ function handleInput(mx, my) {
 function mapRatingToY(rating) {
   let topPadding = bubbleDiameter / 2 + 30; // Space from top
   // Use pause button position as bottom boundary if available, otherwise use default
+  let stringLength = 40;
   let bottomBound = pauseButtonArea && pauseButtonArea.y ? 
-    pauseButtonArea.y - bubbleDiameter / 2 - 10 : 
-    height - bubbleDiameter / 2 - 30;
+    pauseButtonArea.y - bubbleDiameter / 2 - stringLength - 10 : 
+    height - bubbleDiameter / 2 - stringLength - 30;
   return map(rating, 0, 10, bottomBound, topPadding);
 }
 
@@ -468,9 +471,10 @@ function mapRatingToY(rating) {
 function mapYToRating(y) {
   let topPadding = bubbleDiameter / 2 + 30; // Space from top
   // Use pause button position as bottom boundary if available, otherwise use default
+  let stringLength = 40;
   let bottomBound = pauseButtonArea && pauseButtonArea.y ? 
-    pauseButtonArea.y - bubbleDiameter / 2 - 10 : 
-    height - bubbleDiameter / 2 - 30;
+    pauseButtonArea.y - bubbleDiameter / 2 - stringLength - 10 : 
+    height - bubbleDiameter / 2 - stringLength - 30;
   return map(y, bottomBound, topPadding, 0, 10);
 }
 
@@ -513,17 +517,17 @@ function calculateLayout() {
     h: pauseH 
   };
 
-  // Position resume and end buttons below pause button
+  // Position resume and end buttons along the bottom of the screen
   resumeButtonArea = { 
-    x: margin, 
-    y: height - (buttonH * 2 + margin * 3), 
+    x: width - buttonW * 2 - margin * 2, 
+    y: height - buttonH - margin, 
     w: buttonW, 
     h: buttonH 
   };
   
   endButtonArea = { 
-    x: margin, 
-    y: height - (buttonH + margin * 2), 
+    x: width - buttonW - margin, 
+    y: height - buttonH - margin, 
     w: buttonW, 
     h: buttonH 
   };
